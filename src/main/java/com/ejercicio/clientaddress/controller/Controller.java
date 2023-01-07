@@ -29,14 +29,6 @@ public class Controller {
         return clientRepository.save(request.getClient());
     }
 
-    //Crear una nueva direction para client
-//    @PostMapping("/placeDirection/{id}")
-//    public Client placeDirection(@PathVariable int id){
-//
-//       Client client= clientService.getClientById(id);
-//       client.setAddresses();
-//       return client;
-//    }
 
     //Obtener Listado de clientes
     @GetMapping("/findAllClients")

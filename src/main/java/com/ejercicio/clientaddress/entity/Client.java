@@ -2,10 +2,8 @@ package com.ejercicio.clientaddress.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -21,7 +19,6 @@ public class Client {
     @GeneratedValue
     private int id;
     private String typeId;
-
     private String numberId;
     private String name;
     private String email;

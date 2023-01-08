@@ -4,13 +4,18 @@ import com.ejercicio.clientaddress.dto.OrderRequest;
 import com.ejercicio.clientaddress.dto.OrderResponse;
 import com.ejercicio.clientaddress.entity.Address;
 import com.ejercicio.clientaddress.entity.Client;
+import com.ejercicio.clientaddress.entity.ErrorResponse;
 import com.ejercicio.clientaddress.repository.AddressRepository;
 import com.ejercicio.clientaddress.repository.ClientRepository;
 import com.ejercicio.clientaddress.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class Controller {
@@ -23,10 +28,21 @@ public class Controller {
     @Autowired
     private ClientService clientService;
 
+    private Client client;
+
+
     //Crear un nuevo cliente
     @PostMapping("/placeAddress")
-    public Client placeAddress(@RequestBody OrderRequest request){
-        return clientService.addClient(request);
+    public ResponseEntity<?>  placeAddress(@RequestBody OrderRequest request){
+
+        Optional<Client> newClient = Optional.ofNullable(clientRepository.findByNumberId(request.getClient().getNumberId()));
+
+        if(newClient.isPresent()){
+            return conflict();
+        }
+
+        return ResponseEntity.ok(clientService.addClient(request));
+//        return new ResponseEntity<>(clientService.addClient(request), HttpStatus.CREATED);
     }
 
 
@@ -79,5 +95,10 @@ public class Controller {
     @GetMapping("/client/{name}")
     public Client findClientbyName(@PathVariable String name){
         return clientService.findClientbyName(name);
+    }
+
+    private ResponseEntity<?> conflict(){
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CONFLICT.toString(),"User with id exists"),
+                HttpStatus.CONFLICT);
     }
 }

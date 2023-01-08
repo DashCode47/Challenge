@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client,Integer> {
 
-
+//GET CLIENTS NAME WITH ADDRESSES
     @Query("SELECT new com.ejercicio.clientaddress.dto.OrderResponse(c.id,c.name, p.direction)  FROM Client c JOIN c.addresses p")
     public List<OrderResponse> getJoinInfo();
-
+//GET CLIENT NAME BY ID WITH ADDRESS
     @Query("SELECT new com.ejercicio.clientaddress.dto.OrderResponse(c.id,c.name, p.direction)  FROM Client c JOIN c.addresses p WHERE c.id=:id")
     List<OrderResponse> findClientByAddresses(@Param("id") Integer id);
 

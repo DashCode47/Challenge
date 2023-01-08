@@ -26,7 +26,7 @@ public class Controller {
     //Crear un nuevo cliente
     @PostMapping("/placeAddress")
     public Client placeAddress(@RequestBody OrderRequest request){
-        return clientRepository.save(request.getClient());
+        return clientService.addClient(request);
     }
 
 

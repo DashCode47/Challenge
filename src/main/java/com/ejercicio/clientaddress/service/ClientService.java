@@ -1,5 +1,6 @@
 package com.ejercicio.clientaddress.service;
 
+import com.ejercicio.clientaddress.dto.OrderRequest;
 import com.ejercicio.clientaddress.dto.OrderResponse;
 import com.ejercicio.clientaddress.entity.Address;
 import com.ejercicio.clientaddress.entity.Client;
@@ -18,10 +19,12 @@ public class ClientService {
     @Autowired
     ClientRepository clientRepository;
 
-
     public String deleteClient(int id){
         clientRepository.deleteById(id);
-        return "removed"+id;
+        return "removed with id: "+id;
+    }
+    public Client addClient(OrderRequest request){
+        return clientRepository.save(request.getClient());
     }
 
     public Client getClientById(int id) {
@@ -42,7 +45,7 @@ public class ClientService {
         return clientRepository.save(existingClient);
     }
 
-    public Client addAddresses(@NotNull Client client){
+    public Client addAddresses( Client client){
         Client existingClient = clientRepository.findById(client.getId()).orElse(null);
         List<Address> existing =existingClient.getAddresses();
         List<Address> newAddress =client.getAddresses();
